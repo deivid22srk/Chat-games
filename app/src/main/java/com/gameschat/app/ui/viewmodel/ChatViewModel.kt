@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.gameschat.app.data.model.Message
 import com.gameschat.app.data.repository.ChatRepository
+import io.github.jan.supabase.realtime.PostgresAction
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -39,13 +40,12 @@ class ChatViewModel : ViewModel() {
     private fun subscribeToRealtimeMessages() {
         viewModelScope.launch {
             repository.subscribeChannel()
-            repository.subscribeToMessages().collect { newMessage ->
-                if (newMessage.id.isNotEmpty()) {
-                    val currentMessages = _messages.value.toMutableList()
-                    if (currentMessages.none { it.id == newMessage.id }) {
-                        currentMessages.add(newMessage)
-                        _messages.value = currentMessages.sortedBy { it.createdAt }
+            repository.subscribeToMessages().collect { action ->
+                when (action) {
+                    is PostgresAction.Insert, is PostgresAction.Update, is PostgresAction.Delete -> {
+                        loadMessages()
                     }
+                    else -> {}
                 }
             }
         }

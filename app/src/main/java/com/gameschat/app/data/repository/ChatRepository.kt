@@ -7,7 +7,7 @@ import io.github.jan.supabase.realtime.PostgresAction
 import io.github.jan.supabase.realtime.channel
 import io.github.jan.supabase.realtime.postgresChangeFlow
 import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.mapNotNull
 
 class ChatRepository {
     private val client = SupabaseClient.client
@@ -44,19 +44,11 @@ class ChatRepository {
         }
     }
 
-    fun subscribeToMessages(): Flow<Message> {
+    fun subscribeToMessages(): Flow<PostgresAction> {
         val channel = client.channel("messages")
-        val changeFlow = channel.postgresChangeFlow<PostgresAction>(schema = "public") {
+        return channel.postgresChangeFlow<PostgresAction>(schema = "public") {
             table = "messages"
         }
-
-        return changeFlow.map { action ->
-            when (action) {
-                is PostgresAction.Insert -> action.decodeRecord<Message>()
-                is PostgresAction.Update -> action.decodeRecord<Message>()
-                else -> null
-            }
-        }.map { it ?: Message("", "", "", "") }
     }
 
     suspend fun subscribeChannel() {
