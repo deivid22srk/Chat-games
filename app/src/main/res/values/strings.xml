@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Games Chat</string>
+    <string name="login">Login</string>
+    <string name="username">Username</string>
+    <string name="password">Password</string>
+    <string name="sign_in">Sign In</string>
+    <string name="sign_up">Sign Up</string>
+    <string name="create_account">Create Account</string>
+    <string name="already_have_account">Already have an account? Sign In</string>
+    <string name="dont_have_account">Don\'t have an account? Sign Up</string>
+    <string name="send">Send</string>
+    <string name="type_message">Type a message...</string>
+    <string name="logout">Logout</string>
+    <string name="enable_floating_mode">Enable Floating Mode</string>
+    <string name="floating_mode_active">Floating mode active</string>
+    <string name="tap_to_open_chat">Tap to open chat</string>
+    <string name="minimize">Minimize</string>
+    <string name="close_floating">Close Floating Mode</string>
+    <string name="overlay_permission_required">Overlay permission required</string>
+    <string name="games_chat_room">Games Chat Room</string>
+</resources>
